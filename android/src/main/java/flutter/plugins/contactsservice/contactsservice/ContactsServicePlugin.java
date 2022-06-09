@@ -333,7 +333,8 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
 
     void openContactPicker() {
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+//        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
         startIntent(intent, REQUEST_OPEN_CONTACT_PICKER);
     }
 
