@@ -40,7 +40,8 @@ class _ContactPickerPageState extends State<ContactPickerPage> {
             onPressed: _pickContact,
           ),
           if (_contact != null)
-            Text('Contact selected: ${_contact.displayName}'),
+            Text(
+                'Contact selected: ${_contact.displayName}${_contact?.phones?.first?.value}'),
         ],
       )),
     );
