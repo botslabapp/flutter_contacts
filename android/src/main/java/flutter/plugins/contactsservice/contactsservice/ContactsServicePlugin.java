@@ -311,7 +311,17 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                 Cursor cursor = contentResolver.query(contactUri, null, null, null, null);
                 if (cursor.moveToFirst()) {
                     String id = contactUri.getLastPathSegment();
-                    getContacts("openDeviceContactPicker", id, false, false, false, localizedLabels, this.result);
+                    //  Log.e("suyan","================onActivityResult=Segment"+id);
+                    int columnIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
+                    String contactId = cursor.getString(columnIndex);
+                    // Log.e("suyan","================onActivityResult=contactId"+contactId);
+                    String query="";
+                    if(TextUtils.isEmpty(contactId)){
+                        query=id;
+                    }else{
+                        query=contactId;
+                    }
+                    getContacts("openDeviceContactPicker", query, false, false, false, localizedLabels, this.result);
                 } else {
                     Log.e(LOG_TAG, "onActivityResult - cursor.moveToFirst() returns false");
                     finishWithResult(FORM_OPERATION_CANCELED);
@@ -354,8 +364,8 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
 
         void openContactPicker() {
             Intent intent = new Intent(Intent.ACTION_PICK);
- //           intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+           intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+     //   intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
             startIntent(intent, REQUEST_OPEN_CONTACT_PICKER);
         }
 
@@ -600,11 +610,10 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
      */
     private ArrayList<Contact> getContactsFrom(Cursor cursor, boolean localizedLabels) {
         HashMap<String, Contact> map = new LinkedHashMap<>();
-
         while (cursor != null && cursor.moveToNext()) {
             int columnIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
             String contactId = cursor.getString(columnIndex);
-
+            //  Log.e("suyan","================getContactsFrom contactId"+contactId);
             if (!map.containsKey(contactId)) {
                 map.put(contactId, new Contact(contactId));
             }
