@@ -279,14 +279,16 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            BaseContactsServiceDelegate.this.result.success(result);
+                            if (BaseContactsServiceDelegate.this.result != null) {
+                                BaseContactsServiceDelegate.this.result.success(result);
+                                BaseContactsServiceDelegate.this.result = null;
+                            }
                         }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                this.result = null;
             }
         }
 
@@ -315,11 +317,11 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                     int columnIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
                     String contactId = cursor.getString(columnIndex);
                     // Log.e("suyan","================onActivityResult=contactId"+contactId);
-                    String query="";
-                    if(TextUtils.isEmpty(contactId)){
-                        query=id;
-                    }else{
-                        query=contactId;
+                    String query = "";
+                    if (TextUtils.isEmpty(contactId)) {
+                        query = id;
+                    } else {
+                        query = contactId;
                     }
                     getContacts("openDeviceContactPicker", query, false, false, false, localizedLabels, this.result);
                 } else {
@@ -364,8 +366,8 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
 
         void openContactPicker() {
             Intent intent = new Intent(Intent.ACTION_PICK);
-           intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-     //   intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+            intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+            //   intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
             startIntent(intent, REQUEST_OPEN_CONTACT_PICKER);
         }
 
@@ -539,7 +541,9 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            getContactResult.success(result);
+                            if (getContactResult != null) {
+                                getContactResult.success(result);
+                            }
                         }
                     });
                 } catch (Exception e) {
