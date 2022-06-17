@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:quiver/core.dart';
 
 export 'share.dart';
-//0.6.4
+//0.6.5
 class ContactsService {
   static const MethodChannel _channel =
       MethodChannel('github.com/clovisnicolas/flutter_contacts');
