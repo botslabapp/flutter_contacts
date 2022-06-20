@@ -571,7 +571,13 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
             selectionArgs.add(rawContactId);
             selection += " AND " + ContactsContract.Data.CONTACT_ID + " =?";
         }
-        return contentResolver.query(ContactsContract.Data.CONTENT_URI, PROJECTION, selection, selectionArgs.toArray(new String[selectionArgs.size()]), null);
+
+        try {
+            return contentResolver.query(ContactsContract.Data.CONTENT_URI, PROJECTION, selection, selectionArgs.toArray(new String[selectionArgs.size()]), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  null;
+        }
     }
 
     private Cursor getCursorForPhone(String phone) {
