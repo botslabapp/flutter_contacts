@@ -543,6 +543,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                         public void run() {
                             if (getContactResult != null) {
                                 getContactResult.success(result);
+                                getContactResult=null;
                             }
                         }
                     });
