@@ -533,6 +533,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
             return contactMaps;
         }
 
+
         protected void onPostExecute(final ArrayList<HashMap> result) {
             if (result == null) {
                 getContactResult.notImplemented();
