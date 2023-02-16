@@ -309,27 +309,31 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                     finishWithResult(FORM_OPERATION_CANCELED);
                     return true;
                 }
-                Uri contactUri = intent.getData();
-                Cursor cursor = contentResolver.query(contactUri, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    String id = contactUri.getLastPathSegment();
-                    //  Log.e("suyan","================onActivityResult=Segment"+id);
-                    int columnIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
-                    String contactId = cursor.getString(columnIndex);
-                    // Log.e("suyan","================onActivityResult=contactId"+contactId);
-                    String query = "";
-                    if (TextUtils.isEmpty(contactId)) {
-                        query = id;
+                try {
+                    Uri contactUri = intent.getData();
+                    Cursor cursor = contentResolver.query(contactUri, null, null, null, null);
+                    if (cursor.moveToFirst()) {
+                        String id = contactUri.getLastPathSegment();
+                        //  Log.e("suyan","================onActivityResult=Segment"+id);
+                        int columnIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
+                        String contactId = cursor.getString(columnIndex);
+                        // Log.e("suyan","================onActivityResult=contactId"+contactId);
+                        String query = "";
+                        if (TextUtils.isEmpty(contactId)) {
+                            query = id;
+                        } else {
+                            query = contactId;
+                        }
+                        getContacts("openDeviceContactPicker", query, false, false, false, localizedLabels, this.result);
                     } else {
-                        query = contactId;
+                        Log.e(LOG_TAG, "onActivityResult - cursor.moveToFirst() returns false");
+                        finishWithResult(FORM_OPERATION_CANCELED);
                     }
-                    getContacts("openDeviceContactPicker", query, false, false, false, localizedLabels, this.result);
-                } else {
-                    Log.e(LOG_TAG, "onActivityResult - cursor.moveToFirst() returns false");
+                    cursor.close();
+                    return true;
+                } catch (NullPointerException e) {
                     finishWithResult(FORM_OPERATION_CANCELED);
                 }
-                cursor.close();
-                return true;
             }
 
             finishWithResult(FORM_COULD_NOT_BE_OPEN);
@@ -544,7 +548,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                         public void run() {
                             if (getContactResult != null) {
                                 getContactResult.success(result);
-                                getContactResult=null;
+                                getContactResult = null;
                             }
                         }
                     });
@@ -578,7 +582,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
             return contentResolver.query(ContactsContract.Data.CONTENT_URI, PROJECTION, selection, selectionArgs.toArray(new String[selectionArgs.size()]), null);
         } catch (Exception e) {
             e.printStackTrace();
-            return  null;
+            return null;
         }
     }
 
