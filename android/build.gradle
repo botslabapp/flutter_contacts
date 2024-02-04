@@ -3,21 +3,33 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     repositories {
-        maven { url 'http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild/' }
-        maven { url "http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild_test/" }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild_test/"
+        }
         google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:7.2.0'
     }
 }
 
 rootProject.allprojects {
     repositories {
-        maven { url 'http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild/' }
-        maven { url "http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild_test/" }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "http://s3.qbuild.corp.qihoo.net:8360/nexus/content/groups/qbuild_test/"
+        }
         google()
         jcenter()
     }
@@ -26,11 +38,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
